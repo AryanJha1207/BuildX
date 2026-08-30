@@ -1,0 +1,210 @@
+/* ============================
+   Sectors v4 — Professional
+   ============================ */
+
+.sectors {
+  padding: 108px 0;
+  background: #fff;
+  position: relative;
+  overflow: hidden;
+}
+
+.sectors::before {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 200px;
+  background: linear-gradient(180deg, transparent, rgba(15,36,86,0.02));
+  pointer-events: none;
+}
+
+.sectors-header {
+  text-align: center;
+  margin-bottom: 64px;
+}
+
+.sectors-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  margin-bottom: 36px;
+}
+
+/* Sector Card */
+.sector-card {
+  background: #fff;
+  border: 1.5px solid var(--border);
+  border-radius: var(--r-2xl);
+  padding: 32px 24px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+  cursor: default;
+  box-shadow: var(--shadow-xs);
+}
+
+/* Top color accent bar */
+.sector-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 4px;
+  background: var(--sc-color, var(--navy));
+  transform: scaleX(0.3);
+  transform-origin: left;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: 0 0 4px 0;
+}
+
+/* Bottom gradient wash */
+.sector-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(140deg, var(--sc-bg, var(--navy-light)) 0%, transparent 60%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.sector-card:hover {
+  border-color: var(--border-strong);
+  box-shadow: var(--shadow-xl);
+  transform: translateY(-6px);
+}
+
+.sector-card:hover::before { transform: scaleX(1); }
+.sector-card:hover::after { opacity: 0.4; }
+
+.sector-icon-wrap {
+  width: 58px; height: 58px;
+  border-radius: var(--r-xl);
+  background: var(--sc-bg, var(--navy-light));
+  border: 1.5px solid;
+  border-color: color-mix(in srgb, var(--sc-color, var(--navy)) 20%, transparent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.25s ease;
+  position: relative;
+  z-index: 1;
+}
+
+.sector-card:hover .sector-icon-wrap {
+  background: var(--sc-color, var(--navy));
+  border-color: var(--sc-color, var(--navy));
+}
+
+.sector-icon-wrap svg {
+  width: 26px; height: 26px;
+  color: var(--sc-color, var(--navy));
+  transition: color 0.25s;
+}
+
+.sector-card:hover .sector-icon-wrap svg {
+  color: #fff;
+}
+
+.sector-name {
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--text-primary);
+  letter-spacing: -0.4px;
+  position: relative;
+  z-index: 1;
+}
+
+.sector-subsectors {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex: 1;
+  position: relative;
+  z-index: 1;
+}
+
+.sector-subsector {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.4;
+}
+
+.sector-subsector::before {
+  content: '';
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--sc-color, var(--navy));
+  opacity: 0.4;
+  flex-shrink: 0;
+  transition: opacity 0.2s;
+}
+
+.sector-card:hover .sector-subsector::before {
+  opacity: 0.8;
+}
+
+.sector-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 12px;
+  border-top: 1px solid var(--border);
+  position: relative;
+  z-index: 1;
+}
+
+.sector-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 12px;
+  background: var(--sc-bg, var(--navy-light));
+  color: var(--sc-color, var(--navy));
+  border-radius: var(--r-full);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+}
+
+.sector-count {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+/* Sectors note */
+.sectors-note {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 18px 24px;
+  background: var(--navy-light);
+  border: 1.5px solid var(--navy-border);
+  border-radius: var(--r-xl);
+  font-size: 13.5px;
+  color: var(--navy);
+  line-height: 1.6;
+}
+
+.sectors-note svg {
+  width: 18px; height: 18px;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.sectors-note strong { font-weight: 700; }
+
+@media (max-width: 1024px) {
+  .sectors-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 540px) {
+  .sectors { padding: 72px 0; }
+  .sectors-grid { grid-template-columns: 1fr; }
+}
