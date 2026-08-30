@@ -1,0 +1,214 @@
+/* ============================
+   HowItWorks v3 — Premium
+   ============================ */
+
+.hiw {
+  padding: 100px 0;
+  background: var(--bg-soft);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+
+.hiw-header {
+  text-align: center;
+  margin-bottom: 72px;
+}
+
+/* Steps layout */
+.hiw-steps {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+  max-width: 1100px;
+  margin: 0 auto 60px;
+  position: relative;
+}
+
+.hiw-steps::before {
+  content: '';
+  position: absolute;
+  top: 36px;
+  left: 10%;
+  right: 10%;
+  height: 2px;
+  background: var(--border);
+  z-index: 0;
+}
+
+.hiw-step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 0 10px;
+  flex: 1;
+  position: relative;
+  z-index: 1;
+}
+
+.hiw-step-icon-wrap {
+  width: 72px; height: 72px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+  position: relative;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.hiw-step:hover .hiw-step-icon-wrap {
+  transform: translateY(-4px) scale(1.05);
+}
+
+.hiw-step-num {
+  position: absolute;
+  top: -4px; right: -4px;
+  width: 22px; height: 22px;
+  border-radius: 50%;
+  background: var(--saffron);
+  color: #fff;
+  font-size: 10px;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid var(--bg-soft);
+}
+
+.hiw-step-icon-wrap svg {
+  width: 28px; height: 28px;
+}
+
+.hiw-step-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--navy);
+  margin-bottom: 8px;
+  letter-spacing: -0.2px;
+}
+
+.hiw-step-desc {
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+/* ---- Row 2 (government side) ---- */
+.hiw-divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  margin-bottom: 60px;
+  max-width: 1000px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.hiw-divider-line {
+  height: 1px;
+  flex: 1;
+  background: linear-gradient(90deg, transparent, var(--border), transparent);
+}
+
+.hiw-divider-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 20px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--r-full);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  white-space: nowrap;
+  box-shadow: var(--shadow-sm);
+}
+
+.hiw-divider-label svg { width: 14px; height: 14px; }
+
+/* Gov steps (horizontal timeline) */
+.hiw-gov-steps {
+  display: flex;
+  align-items: stretch;
+  justify-content: space-between;
+  gap: 20px;
+  max-width: 1000px;
+  margin: 0 auto;
+  position: relative;
+}
+
+.hiw-gov-steps::before {
+  content: '';
+  position: absolute;
+  top: 46px; /* 24px padding + 22px (half of 44px icon) */
+  left: 15%;
+  right: 15%;
+  height: 2px;
+  background: var(--border);
+  z-index: 0;
+}
+
+.hiw-gov-card {
+  flex: 1;
+  position: relative;
+  z-index: 1;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--r-xl);
+  padding: 24px 22px;
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+  transition: all 0.2s ease;
+  box-shadow: var(--shadow-xs);
+}
+
+.hiw-gov-card:hover {
+  border-color: var(--navy-border);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+
+.hiw-gov-icon {
+  width: 44px; height: 44px;
+  border-radius: var(--r-md);
+  background: var(--navy-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.hiw-gov-icon svg { width: 20px; height: 20px; color: var(--navy); }
+
+.hiw-gov-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+}
+
+.hiw-gov-desc {
+  font-size: 12.5px;
+  color: var(--text-secondary);
+  line-height: 1.55;
+}
+
+@media (max-width: 900px) {
+  .hiw-steps { 
+    flex-direction: column; 
+    align-items: center; 
+    gap: 32px; 
+  }
+  .hiw-steps::before { display: none; }
+  .hiw-gov-steps { 
+    flex-direction: column; 
+    gap: 20px;
+  }
+  .hiw-gov-steps::before { display: none; }
+  .hiw-divider { flex-direction: column; }
+}
