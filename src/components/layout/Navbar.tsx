@@ -113,16 +113,35 @@ export const Navbar: React.FC = () => {
             </select>
           </div>
 
-          {/* Reset Demo Data Button */}
-          <button
-            onClick={resetDemoData}
-            title="Reset to fresh hero demo state"
-            className="btn btn-secondary btn-sm"
-            style={{ fontSize: '11px', color: '#64748b' }}
+          {/* Quick Demo State Controls */}
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '4px',
+              background: '#f1f5f9',
+              padding: '2px 6px',
+              borderRadius: '6px',
+            }}
           >
-            <RefreshCw size={12} />
-            Reset State
-          </button>
+            <button
+              onClick={() => resetDemoData('APPROVED')}
+              title="Reset state to Verified Stage 5/6 Approved Hero State (APR-MH-2026-00124)"
+              className="btn btn-secondary btn-sm"
+              style={{ fontSize: '11px', color: '#15803d', padding: '4px 8px', fontWeight: '600' }}
+            >
+              <RefreshCw size={11} />
+              Reset: Approved State
+            </button>
+            <button
+              onClick={() => resetDemoData('DRAFT')}
+              title="Reset state to Stage 3 Draft to replay submission & scrutiny journey"
+              className="btn btn-secondary btn-sm"
+              style={{ fontSize: '11px', color: '#64748b', padding: '4px 8px' }}
+            >
+              Draft Replay
+            </button>
+          </div>
 
           {/* Active Business/Officer Badge */}
           <div

@@ -37,6 +37,9 @@ export default function GovernmentDashboardPage() {
         </div>
 
         <div style={{ display: 'flex', gap: '10px' }}>
+          <Link href="/government/analytics" className="btn btn-secondary">
+            Process Analytics
+          </Link>
           <Link href={`/government/applications/${application.id}`} className="btn btn-primary">
             Open Active Dossier <ArrowRight size={14} />
           </Link>

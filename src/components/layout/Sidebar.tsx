@@ -25,9 +25,11 @@ export const Sidebar: React.FC = () => {
 
   const isEntrepreneur = currentPersona.role === 'ENTREPRENEUR';
 
+  const openQueryCount = queries.filter((q) => q.status === 'OPEN').length;
+
   const entrepreneurLinks = [
-    { href: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
-    { href: '/business-profile', label: 'Business Profile', icon: Building2, highlight: true },
+    { href: '/dashboard', label: 'Command Center', icon: LayoutDashboard },
+    { href: '/business-profile', label: 'Business Profile', icon: Building2 },
     { href: '/intelligence', label: 'Approval Intelligence', icon: Cpu },
     { href: '/roadmap', label: 'My Roadmap', icon: MapPin },
     {
@@ -37,8 +39,17 @@ export const Sidebar: React.FC = () => {
       badge: application.status !== 'DRAFT' ? application.status : undefined,
     },
     { href: '/vault', label: 'Document Vault', icon: FolderLock },
-    { href: '/compliance', label: 'Compliance & Renewals', icon: CheckCircle2 },
-    { href: '/incentives', label: 'Incentives & Schemes', icon: Gift },
+    ...(queries.length > 0
+      ? [
+          {
+            href: `/query/${queries[0].id}`,
+            label: 'Government Queries',
+            icon: HelpCircle,
+            badge: openQueryCount > 0 ? `${openQueryCount} Open` : undefined,
+          },
+        ]
+      : []),
+    { href: '/incentives', label: 'Incentives & Schemes', icon: Gift, badge: '4 Matches' },
   ];
 
   const officerLinks = [
@@ -47,12 +58,15 @@ export const Sidebar: React.FC = () => {
       href: '/government/applications',
       label: 'Application Queue',
       icon: Inbox,
-      badge: '1 New',
+      badge: application.status === 'SUBMITTED' ? '1 New' : undefined,
     },
-    { href: `/government/applications/${application.id}`, label: 'Active Dossier Review', icon: FileText },
-    { href: '/government/inspections', label: 'Inspection Desk', icon: Calendar },
-    { href: '/government/queries', label: 'Query Manager', icon: HelpCircle },
-    { href: '/government/analytics', label: 'Process Bottlenecks', icon: BarChart3 },
+    {
+      href: `/government/applications/${application.id}`,
+      label: 'Active Dossier Review',
+      icon: FileText,
+      badge: application.status,
+    },
+    { href: '/government/analytics', label: 'Process Analytics', icon: BarChart3 },
   ];
 
   const links = isEntrepreneur ? entrepreneurLinks : officerLinks;

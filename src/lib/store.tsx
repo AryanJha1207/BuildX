@@ -15,7 +15,14 @@ import {
 import {
   DEMO_PERSONAS,
   INITIAL_HERO_BUSINESS,
-  INITIAL_VAULT_DOCUMENTS,
+  BASE_VAULT_DOCUMENTS,
+  VERIFIED_HERO_DOCUMENTS,
+  VERIFIED_HERO_APPLICATION,
+  VERIFIED_HERO_QUERIES,
+  VERIFIED_HERO_INSPECTION,
+  VERIFIED_HERO_EVENTS,
+  VERIFIED_HERO_NOTIFICATIONS,
+  DRAFT_HERO_APPLICATION,
 } from './data/hero-data';
 
 interface AppContextType {
@@ -38,71 +45,33 @@ interface AppContextType {
   inspection: InspectionRecord | null;
   scheduleInspection: (date: string, time: string, location: string) => void;
   startInspection: () => void;
-  completeInspection: (outcome: 'SATISFACTORY' | 'UNSATISFACTORY' | 'FOLLOW_UP_REQUIRED', remarks: string, checklist?: InspectionChecklistItem[]) => void;
+  completeInspection: (
+    outcome: 'SATISFACTORY' | 'UNSATISFACTORY' | 'FOLLOW_UP_REQUIRED',
+    remarks: string,
+    checklist?: InspectionChecklistItem[]
+  ) => void;
   approveApplication: (referenceNumber?: string) => void;
   rejectApplication: (reason: string) => void;
   resolveQuery: (queryId: string) => void;
   notifications: NotificationItem[];
   markNotificationRead: (id: string) => void;
-  resetDemoData: () => void;
+  resetDemoData: (mode?: 'APPROVED' | 'DRAFT') => void;
 }
-
-const INITIAL_APPLICATION: Application = {
-  id: 'app-hero-00124',
-  appNumber: 'APP-MH-2026-00124',
-  businessId: 'a1b2c3d4-e5f6-7a8b-9c0d-1e2f3a4b5c6d',
-  approvalCode: 'FSSAI_CENTRAL_LICENSE',
-  approvalName: 'FSSAI Central Licence for Cold Storage / Food Warehouse',
-  department: 'Food Safety and Standards Authority of India (FSSAI)',
-  authorityName: 'Designated Officer & Central Licensing Authority (Western Region)',
-  status: 'DRAFT',
-  slaDays: 30,
-  formData: {
-    premisesType: 'Owned (MIDC Industrial Leasehold)',
-    operationalShift: '24 Hours / 3 Shifts',
-    storageCategories: ['Dairy & Frozen Foods', 'Fresh Fruits & Vegetables', 'Processed Packaged Goods'],
-    ammoniaSafetyAudit: 'Certified / Compliant',
-    standbyGensetKva: '500 kVA',
-  },
-  createdAt: '2026-08-28T09:00:00Z',
-  updatedAt: '2026-08-28T09:00:00Z',
-};
-
-const INITIAL_EVENTS: ApplicationEvent[] = [
-  {
-    id: 'evt-001',
-    applicationId: 'app-hero-00124',
-    actorRole: 'ENTREPRENEUR',
-    actorName: 'Vikram Malhotra',
-    eventType: 'APPLICATION_CREATED',
-    title: 'Application Draft Created',
-    description: 'FSSAI Central Licence application drafted using verified Business Profile information.',
-    createdAt: '2026-08-28T09:00:00Z',
-  },
-];
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
 
 const STORAGE_KEY = 'buildx_sih_state_v1';
 
 export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  // Initialize to Verified Final Stage 5/6 Hero State by default
   const [currentPersona, setCurrentPersona] = useState<Persona>(DEMO_PERSONAS[0]);
   const [business, setBusiness] = useState<BusinessProfile>(INITIAL_HERO_BUSINESS);
-  const [documents, setDocuments] = useState<VaultDocument[]>(INITIAL_VAULT_DOCUMENTS);
-  const [application, setApplication] = useState<Application>(INITIAL_APPLICATION);
-  const [events, setEvents] = useState<ApplicationEvent[]>(INITIAL_EVENTS);
-  const [queries, setQueries] = useState<QueryRecord[]>([]);
-  const [inspection, setInspection] = useState<InspectionRecord | null>(null);
-  const [notifications, setNotifications] = useState<NotificationItem[]>([
-    {
-      id: 'notif-001',
-      title: 'Business Profile 92% Complete',
-      message: 'MIDC Chakan plot details and contact information verified.',
-      type: 'INFO',
-      isRead: false,
-      createdAt: '2026-08-28T09:00:00Z',
-    },
-  ]);
+  const [documents, setDocuments] = useState<VaultDocument[]>(VERIFIED_HERO_DOCUMENTS);
+  const [application, setApplication] = useState<Application>(VERIFIED_HERO_APPLICATION);
+  const [events, setEvents] = useState<ApplicationEvent[]>(VERIFIED_HERO_EVENTS);
+  const [queries, setQueries] = useState<QueryRecord[]>(VERIFIED_HERO_QUERIES);
+  const [inspection, setInspection] = useState<InspectionRecord | null>(VERIFIED_HERO_INSPECTION);
+  const [notifications, setNotifications] = useState<NotificationItem[]>(VERIFIED_HERO_NOTIFICATIONS);
 
   // Load from LocalStorage on mount
   useEffect(() => {
@@ -121,6 +90,18 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
           const p = DEMO_PERSONAS.find((item) => item.id === parsed.personaId);
           if (p) setCurrentPersona(p);
         }
+      } else {
+        // First load in new session: persist initial verified hero state
+        persistState({
+          business: INITIAL_HERO_BUSINESS,
+          documents: VERIFIED_HERO_DOCUMENTS,
+          application: VERIFIED_HERO_APPLICATION,
+          events: VERIFIED_HERO_EVENTS,
+          queries: VERIFIED_HERO_QUERIES,
+          inspection: VERIFIED_HERO_INSPECTION,
+          notifications: VERIFIED_HERO_NOTIFICATIONS,
+          personaId: DEMO_PERSONAS[0].id,
+        });
       }
     } catch (e) {
       console.warn('Could not load cached state', e);
@@ -327,7 +308,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       title: `Query Response Received for ${application.appNumber}`,
       message: `Applicant has submitted a response and attached requested documentation.`,
       type: 'INFO',
-      linkUrl: `/review/${application.id}`,
+      linkUrl: `/government/applications/${application.id}`,
       isRead: false,
       createdAt: new Date().toISOString(),
     };
@@ -500,15 +481,71 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     setNotifications((prev) => prev.map((n) => (n.id === id ? { ...n, isRead: true } : n)));
   };
 
-  const resetDemoData = () => {
+  const resetDemoData = (mode: 'APPROVED' | 'DRAFT' = 'APPROVED') => {
     localStorage.removeItem(STORAGE_KEY);
-    setBusiness(INITIAL_HERO_BUSINESS);
-    setDocuments(INITIAL_VAULT_DOCUMENTS);
-    setApplication(INITIAL_APPLICATION);
-    setEvents(INITIAL_EVENTS);
-    setQueries([]);
-    setInspection(null);
-    setCurrentPersona(DEMO_PERSONAS[0]);
+    if (mode === 'DRAFT') {
+      const draftApp = { ...DRAFT_HERO_APPLICATION };
+      const draftDocs = [...BASE_VAULT_DOCUMENTS];
+      const draftEvts: ApplicationEvent[] = [
+        {
+          id: 'evt-001',
+          applicationId: 'app-hero-00124',
+          actorRole: 'ENTREPRENEUR',
+          actorName: 'Vikram Malhotra',
+          eventType: 'APPLICATION_CREATED',
+          title: 'Application Draft Created',
+          description: 'FSSAI Central Licence application drafted using verified Business Profile information.',
+          createdAt: new Date().toISOString(),
+        },
+      ];
+      setBusiness(INITIAL_HERO_BUSINESS);
+      setDocuments(draftDocs);
+      setApplication(draftApp);
+      setEvents(draftEvts);
+      setQueries([]);
+      setInspection(null);
+      setNotifications([
+        {
+          id: 'notif-001',
+          title: 'Business Profile 92% Complete',
+          message: 'MIDC Chakan plot details and contact information verified.',
+          type: 'INFO',
+          isRead: false,
+          createdAt: new Date().toISOString(),
+        },
+      ]);
+      setCurrentPersona(DEMO_PERSONAS[0]);
+      persistState({
+        business: INITIAL_HERO_BUSINESS,
+        documents: draftDocs,
+        application: draftApp,
+        events: draftEvts,
+        queries: [],
+        inspection: null,
+        notifications: [],
+        personaId: DEMO_PERSONAS[0].id,
+      });
+    } else {
+      // Default: Reset to Verified Final Stage 5/6 Approved State
+      setBusiness(INITIAL_HERO_BUSINESS);
+      setDocuments(VERIFIED_HERO_DOCUMENTS);
+      setApplication(VERIFIED_HERO_APPLICATION);
+      setEvents(VERIFIED_HERO_EVENTS);
+      setQueries(VERIFIED_HERO_QUERIES);
+      setInspection(VERIFIED_HERO_INSPECTION);
+      setNotifications(VERIFIED_HERO_NOTIFICATIONS);
+      setCurrentPersona(DEMO_PERSONAS[0]);
+      persistState({
+        business: INITIAL_HERO_BUSINESS,
+        documents: VERIFIED_HERO_DOCUMENTS,
+        application: VERIFIED_HERO_APPLICATION,
+        events: VERIFIED_HERO_EVENTS,
+        queries: VERIFIED_HERO_QUERIES,
+        inspection: VERIFIED_HERO_INSPECTION,
+        notifications: VERIFIED_HERO_NOTIFICATIONS,
+        personaId: DEMO_PERSONAS[0].id,
+      });
+    }
   };
 
   return (
