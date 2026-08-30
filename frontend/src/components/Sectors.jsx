@@ -5,11 +5,13 @@ const sectors = [
     name: 'Logistics & Warehousing',
     color: '#1a3a8a',
     bg: '#eef3ff',
+    count: '3 Sub-sectors',
     subsectors: ['General Warehouse / Storage', 'Cold Storage / Cold Chain', 'Distribution Center'],
     tag: '⭐ Hero Scenario',
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/>
+        <rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/>
+        <circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/>
       </svg>
     ),
   },
@@ -17,11 +19,13 @@ const sectors = [
     name: 'Tourism & Hospitality',
     color: '#0891b2',
     bg: '#ecfeff',
+    count: '3 Sub-sectors',
     subsectors: ['Hotel / Resort', 'Homestay', 'Restaurant / Food Service'],
     tag: '3 Sub-sectors',
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>
+        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+        <polyline points="9 22 9 12 15 12 15 22"/>
       </svg>
     ),
   },
@@ -29,6 +33,7 @@ const sectors = [
     name: 'Textiles & Garments',
     color: '#7c3aed',
     bg: '#f5f3ff',
+    count: '3 Sub-sectors',
     subsectors: ['Garment Manufacturing', 'Spinning / Weaving', 'Textile Processing / Dyeing'],
     tag: '3 Sub-sectors',
     icon: (
@@ -41,6 +46,7 @@ const sectors = [
     name: 'Food Processing',
     color: '#16a34a',
     bg: '#f0fdf4',
+    count: '3 Sub-sectors',
     subsectors: ['Dairy Processing', 'Fruit & Vegetable Processing', 'Grain / Flour Processing'],
     tag: '3 Sub-sectors',
     icon: (
@@ -56,9 +62,9 @@ export default function Sectors() {
     <section className="sectors" id="sectors">
       <div className="container">
         <div className="sectors-header">
-          <div className="eyebrow">Sector Coverage</div>
+          <div className="eyebrow" style={{ justifyContent: 'center' }}>Sector Coverage</div>
           <h2 className="h2">4 Sectors · 12 Sub-sectors</h2>
-          <p className="lead" style={{ margin: '12px auto 0', maxWidth: 500, textAlign: 'center' }}>
+          <p className="lead" style={{ margin: '14px auto 0', maxWidth: 500, textAlign: 'center' }}>
             BuildX is purpose-built for Maharashtra's key industries, with approval
             intelligence pre-configured for the most common business types.
           </p>
@@ -81,7 +87,10 @@ export default function Sectors() {
                   <li key={sub} className="sector-subsector">{sub}</li>
                 ))}
               </ul>
-              <div className="sector-tag">{sector.tag}</div>
+              <div className="sector-footer">
+                <div className="sector-tag">{sector.tag}</div>
+                <span className="sector-count">{sector.count}</span>
+              </div>
             </div>
           ))}
         </div>
@@ -90,9 +99,11 @@ export default function Sectors() {
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
             <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
           </svg>
-          Full approval intelligence is configured for{' '}
-          <strong>Logistics / Warehousing → Cold Storage / Cold Chain (Hero Scenario).</strong>{' '}
-          Other sub-sectors show <strong>NEEDS REVIEW</strong> where rules are pending configuration.
+          <span>
+            Full approval intelligence is configured for{' '}
+            <strong>Logistics / Warehousing → Cold Storage / Cold Chain (Hero Scenario).</strong>{' '}
+            Other sub-sectors show <strong>NEEDS REVIEW</strong> where rules are pending configuration.
+          </span>
         </div>
       </div>
     </section>

@@ -1,8 +1,8 @@
 /* ======================
-   Navbar v3 — Premium Gov
+   Navbar v5 — Single Unified Glass Bar
    ====================== */
 
-/* Tricolor top */
+/* ── Tricolor stripe (always visible at very top) ── */
 .tricolor-bar {
   height: 4px;
   background: linear-gradient(90deg,
@@ -12,218 +12,373 @@
   );
   position: fixed;
   top: 0; left: 0; right: 0;
-  z-index: 200;
+  z-index: 300;
 }
 
-/* Main Navbar */
+/* ── Main single navbar ── */
 .navbar {
   position: fixed;
   top: 4px; left: 0; right: 0;
-  z-index: 150;
-  transition: all 0.25s ease;
+  z-index: 200;
+  /* Opaque glass — always on, not only on scroll */
+  background: rgba(7, 18, 52, 0.72);
+  backdrop-filter: blur(20px) saturate(1.5);
+  -webkit-backdrop-filter: blur(20px) saturate(1.5);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  transition: background 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
 }
 
+/* On scroll — darken + stronger shadow */
 .navbar.scrolled {
-  background: rgba(255,255,255,0.97);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border-bottom: 1px solid var(--border);
-  box-shadow: 0 2px 20px rgba(15,36,86,0.08);
+  background: rgba(7, 18, 52, 0.92);
+  backdrop-filter: blur(28px) saturate(1.8);
+  -webkit-backdrop-filter: blur(28px) saturate(1.8);
+  border-bottom-color: rgba(255, 255, 255, 0.1);
+  box-shadow: 0 4px 32px rgba(0, 0, 0, 0.35);
 }
 
+/* ── Inner layout ── */
 .navbar-inner {
   display: flex;
   align-items: center;
   justify-content: space-between;
   height: 68px;
-  transition: height 0.25s ease;
+  gap: 16px;
 }
 
-.navbar.scrolled .navbar-inner { height: 60px; }
-
-/* ---- Logo ---- */
-.navbar-logo {
+/* ── Brand / Identity (left) ── */
+.navbar-brand {
   display: flex;
   align-items: center;
   gap: 12px;
   text-decoration: none;
+  flex-shrink: 0;
+  min-width: 0;
 }
 
-.navbar-logo-mark {
+/* Ashoka emblem */
+.navbar-emblem {
   width: 40px;
   height: 40px;
-  background: var(--navy);
-  border-radius: 10px;
+  flex-shrink: 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  flex-shrink: 0;
-  position: relative;
-  overflow: hidden;
+  color: #f97316;
+  opacity: 0.9;
+  transition: opacity 0.2s;
 }
 
-.navbar-logo-mark::after {
-  content: '';
-  position: absolute;
-  bottom: 0; left: 0; right: 0;
-  height: 3px;
-  background: var(--saffron);
+.navbar-brand:hover .navbar-emblem {
+  opacity: 1;
 }
 
-.navbar-logo-mark svg {
-  width: 22px; height: 22px;
+.navbar-emblem svg {
+  width: 36px;
+  height: 36px;
+}
+
+/* Identity text block — stacked BuildX over Gov name */
+.navbar-identity {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  line-height: 1.2;
+  gap: 2px;
+}
+
+.navbar-buildx-name {
+  font-size: 20px;
+  font-weight: 900;
   color: #fff;
+  letter-spacing: -0.8px;
+  line-height: 1;
 }
 
-.navbar-logo-text { line-height: 1.2; }
-
-.navbar-logo-name {
-  display: block;
-  font-size: 18px;
-  font-weight: 800;
-  color: var(--text-primary);
-  letter-spacing: -0.5px;
+.navbar-x {
+  color: #f97316;
 }
 
-.navbar.scrolled .navbar-logo-name { color: var(--navy); }
-
-.navbar-logo-sub {
-  display: block;
-  font-size: 10px;
+.navbar-gov-sub {
+  font-size: 9.5px;
   font-weight: 600;
-  color: var(--text-muted);
-  letter-spacing: 1px;
+  color: rgba(255, 255, 255, 0.45);
+  letter-spacing: 0.4px;
   text-transform: uppercase;
+  white-space: nowrap;
 }
 
-/* When over hero (transparent navbar) */
-.navbar:not(.scrolled) .navbar-logo-name { color: #fff; }
-.navbar:not(.scrolled) .navbar-logo-sub { color: rgba(255,255,255,0.6); }
-
-/* ---- Nav Links ---- */
+/* ── Nav links (center) ── */
 .navbar-links {
   display: flex;
   align-items: center;
   gap: 2px;
+  flex: 1;
+  justify-content: center;
 }
 
-.navbar-links a {
+.nav-link {
   padding: 7px 14px;
   font-size: 13.5px;
   font-weight: 500;
   border-radius: var(--r-md);
-  transition: all 0.15s;
-  color: rgba(255,255,255,0.8);
+  color: rgba(255, 255, 255, 0.72);
+  text-decoration: none;
+  transition: color 0.15s ease, background 0.15s ease;
+  position: relative;
+  white-space: nowrap;
 }
 
-.navbar.scrolled .navbar-links a { color: var(--text-secondary); }
+.nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: 3px;
+  left: 50%;
+  transform: translateX(-50%) scaleX(0);
+  width: 16px;
+  height: 2px;
+  background: #f97316;
+  border-radius: 2px;
+  transition: transform 0.2s ease;
+}
 
-.navbar-links a:hover {
-  background: rgba(255,255,255,0.12);
+.nav-link:hover {
   color: #fff;
+  background: rgba(255, 255, 255, 0.08);
 }
 
-.navbar.scrolled .navbar-links a:hover {
-  background: var(--bg-subtle);
-  color: var(--text-primary);
+.nav-link:hover::after {
+  transform: translateX(-50%) scaleX(1);
 }
 
-/* ---- Actions ---- */
+/* ── Right actions ── */
 .navbar-actions {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
+  flex-shrink: 0;
 }
 
-.navbar-btn-login {
-  padding: 8px 18px;
-  font-size: 13.5px;
+/* Language switcher */
+.navbar-lang {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.lang-link {
+  font-size: 11.5px;
   font-weight: 600;
-  border-radius: var(--r-md);
-  border: 1.5px solid rgba(255,255,255,0.35);
-  color: rgba(255,255,255,0.9);
-  background: transparent;
-  cursor: pointer;
-  transition: all 0.15s;
+  color: rgba(255, 255, 255, 0.45);
+  text-decoration: none;
+  transition: color 0.15s;
+  padding: 2px 0;
+}
+
+.lang-link:hover {
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.lang-sep {
+  font-size: 10px;
+  color: rgba(255, 255, 255, 0.2);
+}
+
+/* Vertical divider in actions */
+.navbar-actions-divider {
+  width: 1px;
+  height: 22px;
+  background: rgba(255, 255, 255, 0.12);
+}
+
+/* Live indicator */
+.navbar-live {
   display: flex;
   align-items: center;
   gap: 6px;
+  padding: 4px 10px;
+  background: rgba(74, 222, 128, 0.08);
+  border: 1px solid rgba(74, 222, 128, 0.2);
+  border-radius: var(--r-full);
+}
+
+.live-dot {
+  display: block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #4ade80;
+  animation: pulse-dot 2s ease-in-out infinite;
+  flex-shrink: 0;
+}
+
+.live-text {
+  font-size: 10.5px;
+  font-weight: 700;
+  color: #4ade80;
+  letter-spacing: 0.3px;
+}
+
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%       { opacity: 0.55; transform: scale(0.82); }
+}
+
+/* Sign In button */
+.navbar-btn-login {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 16px;
+  font-size: 13px;
+  font-weight: 600;
+  border-radius: var(--r-md);
+  border: 1.5px solid rgba(255, 255, 255, 0.22);
+  color: rgba(255, 255, 255, 0.82);
+  background: transparent;
+  cursor: pointer;
+  transition: all 0.18s ease;
+  text-decoration: none;
+  white-space: nowrap;
 }
 
 .navbar-btn-login:hover {
-  background: rgba(255,255,255,0.1);
-  border-color: rgba(255,255,255,0.6);
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.5);
   color: #fff;
 }
 
-.navbar.scrolled .navbar-btn-login {
-  border-color: var(--border-strong);
-  color: var(--text-secondary);
-}
-
-.navbar.scrolled .navbar-btn-login:hover {
-  background: var(--bg-subtle);
-  color: var(--text-primary);
-  border-color: var(--border-strong);
-}
-
+/* Get Started button */
 .navbar-btn-register {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
   padding: 8px 18px;
-  font-size: 13.5px;
+  font-size: 13px;
   font-weight: 700;
   border-radius: var(--r-md);
   border: 1.5px solid var(--saffron);
   color: #fff;
   background: var(--saffron);
   cursor: pointer;
-  transition: all 0.15s;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  box-shadow: 0 2px 8px rgba(249,115,22,0.3);
+  transition: all 0.18s ease;
+  text-decoration: none;
+  box-shadow: 0 2px 12px rgba(249, 115, 22, 0.35);
+  white-space: nowrap;
 }
 
 .navbar-btn-register:hover {
   background: var(--saffron-dark);
   border-color: var(--saffron-dark);
   transform: translateY(-1px);
-  box-shadow: 0 4px 14px rgba(249,115,22,0.4);
+  box-shadow: 0 5px 18px rgba(249, 115, 22, 0.45);
 }
 
-/* Gov portal badge */
-.navbar-gov-badge {
+/* Hamburger */
+.navbar-hamburger {
+  display: none;
+  flex-direction: column;
+  gap: 4.5px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 7px;
+  border-radius: 7px;
+  transition: background 0.15s;
+}
+
+.navbar-hamburger:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.hb {
+  display: block;
+  width: 20px;
+  height: 2px;
+  background: rgba(255, 255, 255, 0.75);
+  border-radius: 2px;
+  transition: all 0.2s ease;
+}
+
+/* ── Mobile dropdown ── */
+.navbar-mobile-menu {
+  background: rgba(7, 18, 52, 0.97);
+  backdrop-filter: blur(24px);
+  border-top: 1px solid rgba(255, 255, 255, 0.07);
+  padding: 14px 0 18px;
+}
+
+.navbar-mobile-menu .container {
   display: flex;
-  align-items: center;
-  gap: 6px;
-  padding: 4px 12px 4px 10px;
-  border-radius: var(--r-full);
-  background: rgba(255,255,255,0.12);
-  border: 1px solid rgba(255,255,255,0.2);
-  font-size: 11px;
-  font-weight: 600;
-  color: rgba(255,255,255,0.75);
-  letter-spacing: 0.3px;
+  flex-direction: column;
+  gap: 2px;
 }
 
-.navbar.scrolled .navbar-gov-badge {
-  background: var(--navy-light);
-  border-color: var(--navy-border);
-  color: var(--navy-mid);
+.navbar-mobile-menu a {
+  display: block;
+  padding: 10px 12px;
+  font-size: 14px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.65);
+  border-radius: var(--r-md);
+  text-decoration: none;
+  transition: all 0.15s;
 }
 
-.navbar-gov-badge .live-dot {
-  width: 6px; height: 6px;
-  border-radius: 50%;
-  background: #4ade80;
-  animation: pulse-dot 2s ease-in-out infinite;
+.navbar-mobile-menu a:hover {
+  background: rgba(255, 255, 255, 0.07);
+  color: #fff;
 }
 
-@keyframes pulse-dot {
-  0%, 100% { opacity: 1; transform: scale(1); }
-  50% { opacity: 0.6; transform: scale(0.85); }
+.mobile-divider {
+  height: 1px;
+  background: rgba(255, 255, 255, 0.07);
+  margin: 8px 0;
 }
 
-@media (max-width: 900px) {
+.mobile-lang {
+  display: flex;
+  gap: 8px;
+  padding: 6px 12px;
+}
+
+.mobile-lang a {
+  color: rgba(255, 255, 255, 0.45) !important;
+  font-size: 12px !important;
+  padding: 4px 8px !important;
+}
+
+.mobile-login {
+  border: 1.5px solid rgba(255, 255, 255, 0.18) !important;
+  text-align: center;
+}
+
+.mobile-register {
+  background: var(--saffron) !important;
+  color: #fff !important;
+  font-weight: 700 !important;
+  text-align: center;
+  border-radius: var(--r-md);
+}
+
+/* ── Responsive breakpoints ── */
+@media (max-width: 640px) {
+  .navbar-buildx-name { font-size: 17px; }
+  .navbar-gov-sub { display: none; }
+}
+
+@media (max-width: 960px) {
   .navbar-links { display: none; }
-  .navbar-gov-badge { display: none; }
+  .navbar-lang  { display: none; }
+  .navbar-live  { display: none; }
+  .navbar-actions-divider { display: none; }
+  .navbar-btn-login    { display: none; }
+  .navbar-btn-register { display: none; }
+  .navbar-hamburger { display: flex; }
+}
+
+@media (max-width: 640px) {
+  .navbar-gov-name { font-size: 11.5px; }
+  .navbar-divider-v { display: none; }
+  .navbar-product-line { display: none; }
 }

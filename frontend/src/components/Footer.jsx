@@ -35,18 +35,21 @@ export default function Footer() {
                   <polyline points="9 22 9 12 15 12 15 22"/>
                 </svg>
               </div>
-              <span className="footer-brand-name">BuildX</span>
+              <div className="footer-brand-text">
+                <div className="footer-brand-name">Build<span className="footer-brand-name-x">X</span></div>
+                <div className="footer-brand-tagline">Maharashtra · SIH 2026</div>
+              </div>
             </div>
 
             <p className="footer-brand-desc">
-              Intelligent Approval &amp; Compliance Management Platform for
-              Maharashtra businesses. One profile. Every approval.
+              Intelligent Approval &amp; Compliance Management Platform for Maharashtra businesses.
+              One profile. Every approval. No more fragmented visits.
             </p>
 
             <div className="footer-pills">
               <span className="footer-pill">SIH 2026</span>
               <span className="footer-pill">Problem #26130</span>
-              <span className="footer-pill">Maharashtra</span>
+              <span className="footer-pill">Maharashtra Gov</span>
             </div>
           </div>
 
@@ -65,9 +68,14 @@ export default function Footer() {
 
         {/* Bottom */}
         <div className="footer-bottom">
-          <span className="footer-copy">
-            © 2026 BuildX · Smart India Hackathon Prototype · Not an official government portal.
-          </span>
+          <div className="footer-bottom-left">
+            <span className="footer-copy">
+              © 2026 BuildX · Smart India Hackathon Prototype
+            </span>
+            <span className="footer-disclaimer">
+              Not an official government portal. Built for SIH 2026 demonstration purposes.
+            </span>
+          </div>
           <div className="footer-live">
             <span className="footer-live-dot" />
             Maharashtra Prototype · Live

@@ -153,7 +153,7 @@ export default function Features() {
         <div className="features-header">
           <div className="eyebrow">Platform Features</div>
           <h2 className="h2">Everything you need,<br />in one connected system</h2>
-          <p className="lead" style={{ marginTop: 12 }}>
+          <p className="lead" style={{ marginTop: 14 }}>
             From intelligence to approval — BuildX connects every step for
             entrepreneurs and government officers alike.
           </p>
@@ -170,6 +170,7 @@ export default function Features() {
                 role="button"
                 tabIndex={0}
                 onKeyDown={(e) => e.key === 'Enter' && setActiveFeature(i)}
+                id={`feature-tab-${i}`}
               >
                 <div className="feat-item-icon">{f.icon}</div>
                 <div className="feat-item-body">
@@ -193,7 +194,14 @@ export default function Features() {
                   <div className="feat-panel-icon">{active.icon}</div>
                   <span className="feat-panel-name">{active.title}</span>
                 </div>
-                <span className="badge badge-success">Live Preview</span>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                  <span className="badge badge-success">Live Preview</span>
+                  <div style={{ display: 'flex', gap: 5 }}>
+                    <div style={{ width: 10, height: 10, borderRadius: '50%', background: '#ff5f57' }} />
+                    <div style={{ width: 10, height: 10, borderRadius: '50%', background: '#febc2e' }} />
+                    <div style={{ width: 10, height: 10, borderRadius: '50%', background: '#28c840' }} />
+                  </div>
+                </div>
               </div>
               <div className="feat-panel-body">
                 {active.visual === 'roadmap' ? <RoadmapVisual /> : <ValidationVisual />}
